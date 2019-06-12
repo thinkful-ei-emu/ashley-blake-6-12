@@ -19,9 +19,18 @@ $(document).ready(function() {
 
 // store.items.push(Item.create('apples'));
 
+// api.getItems()
+//   .then(res => res.json())
+//   .then((items) => {
+//     items.forEach((item) => store.addItem(item));
+//     shoppingList.render();
+//   });
+
 api.getItems()
   .then(res => res.json())
   .then((items) => {
-    items.forEach((item) => store.addItem(item));
-    shoppingList.render();
-  });
+    const item = items[0];
+    return api.itemUpdate(item.id, { name: 'foobar' });
+  })
+  .then(res => res.json())
+  .then(() => console.log('updated!'));

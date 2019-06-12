@@ -135,11 +135,16 @@ const shoppingList = (function(){
       const newItemName = $('.js-shopping-list-entry').val();
 
       $('.js-shopping-list-entry').val('');
-
-      store.addItem(newItemName);
-
-      render();
-
+      console.log('form subbmitted')
+      if(newItemName){
+        api.createItem(newItemName)
+          .then(res => res.json())
+          .then((newItem) => {
+            console.log('about to add item');
+            store.addItem(newItem);
+            render();
+          });
+      }
     });
 
   }
