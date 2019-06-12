@@ -33,13 +33,13 @@ const store = (function(){
 
 
 
-  const findAndToggleChecked = function(id) {
+  // const findAndToggleChecked = function(id) {
 
-    const item = this.findById(id);
+  //   const item = this.findById(id);
 
-    item.checked = !item.checked;
+  //   item.checked = !item.checked;
 
-  };
+  // };
 
 
 
@@ -51,23 +51,23 @@ const store = (function(){
 
 
 
-  const findAndUpdateName = function(id, name) {
+  // const findAndUpdateName = function(id, name) {
 
-    try {
+  //   try {
 
-      Item.validateName(name);
+  //     Item.validateName(name);
 
-      const item = this.findById(id);
+  //     const item = this.findById(id);
 
-      item.name = name;
+  //     item.name = name;
 
-    } catch(e) {
+  //   } catch(e) {
 
-      console.log('Cannot update name: ' + e.message);
+  //     console.log('Cannot update name: ' + e.message);
 
-    }
+  //   }
 
-  };
+  // };
 
 
 
@@ -88,12 +88,18 @@ const store = (function(){
   };
 
 
-
   const setSearchTerm = function(term) {
 
     this.searchTerm = term;
 
   };
+
+  const findAndUpdate = function (id, newData){
+    const item = this.items.find(item => item.id === id);
+    const newItem= Object.assign(item, newData);
+    console.log(newItem);
+    return newItem;
+  }
 
 
 
@@ -111,17 +117,19 @@ const store = (function(){
 
     findById,
 
-    findAndToggleChecked,
+    // findAndToggleChecked,
 
     findAndDelete,
 
-    findAndUpdateName,
+    // findAndUpdateName,
 
     toggleCheckedFilter,
 
     setSearchTerm,
 
     setItemIsEditing,
+
+    findAndUpdate
 
   };
 

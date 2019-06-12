@@ -5,7 +5,8 @@ const api = (function(){
 
   const getItems = function(){
     //return Promise.resolve('A successful response!');
-    return fetch(`${BASE_URL}/items`);
+    return fetch(`${BASE_URL}/items`)
+      
   };
 
   const createItem = function(name){
@@ -36,14 +37,15 @@ const api = (function(){
       }),
       body: newData
     });
-  };
+  };  
 
 
   return {
     getItems,
     BASE_URL,
     createItem,
-    itemUpdate
+    itemUpdate,
+    
   };
 
 

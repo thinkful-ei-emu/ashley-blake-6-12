@@ -169,9 +169,20 @@ const shoppingList = (function(){
 
       const id = getItemIdFromElement(event.currentTarget);
 
-      store.findAndToggleChecked(id);
+      // store.findAndToggleChecked(id);
+      const item = store.findById(id)
+      api.itemUpdate(id, {checked: !item.checked});
+      return fetch(`${api.BASE_URL}/items/${id}`)
+        .then(res => {
+          if(res.ok){
+            store.findAndUpdate(id, {checked: !item.checked})
+            render();
+          }         
+        });    
 
-      render();
+      
+
+      
 
     });
 
@@ -187,7 +198,7 @@ const shoppingList = (function(){
 
       // get the index of the item in store.items
 
-      const id = getItemIdFromElement(event.currentTarget);
+      const id = getItemIdFromElement(event.currentTarget);     
 
       // delete the item
 
@@ -213,11 +224,23 @@ const shoppingList = (function(){
 
       const itemName = $(event.currentTarget).find('.shopping-item').val();
 
-      store.findAndUpdateName(id, itemName);
+      // store.findAndUpdateName(id, itemName);
 
       store.setItemIsEditing(id, false);
 
-      render();
+      const newName = {name: itemName};
+
+      api.itemUpdate(id, newName);
+
+      return fetch(`${BASE_URL}/items/${id}`)
+        .then(res => {
+          if(res.ok){
+            store.findAndUpdate(id, newName)
+            render();
+          }         
+        });            
+
+      
 
     });
 
@@ -230,6 +253,7 @@ const shoppingList = (function(){
     $('.js-filter-checked').click(() => {
 
       store.toggleCheckedFilter();
+      
 
       render();
 
