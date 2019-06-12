@@ -6,19 +6,20 @@
 
 const store = (function(){
 
-  const addItem = function(name) {
+  const addItem = function(item) {
 
-    try {
+    // try {
 
-      Item.validateName(name);
+    //   Item.validateName(name);
 
-      this.items.push(Item.create(name));
+    //   this.items.push(Item.create(name));
 
-    } catch(e) {
+    // } catch(e) {
 
-      console.log(e.message);
+    //   console.log(e.message);
 
-    }
+    // }
+    this.items.push(item);
 
   };
 
