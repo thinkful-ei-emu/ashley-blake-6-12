@@ -20,7 +20,7 @@ $(document).ready(function() {
 // store.items.push(Item.create('apples'));
 
 api.getItems() 
-  .then(res => res.json())
+  // .then(res => res.json())
   .then((items) => {   
     items.forEach((item) => store.addItem(item));
     const item = store.items[0];

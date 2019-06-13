@@ -8,7 +8,13 @@
 
 const shoppingList = (function(){
 
-
+  function generateError(message){
+    return `
+    <section class="error-content">
+    <button id="cancel-error">X</button>
+    <p>${message}</p>
+    </section>`;
+  }
 
   function generateItemElement(item) {
 
@@ -80,6 +86,16 @@ const shoppingList = (function(){
 
   }
 
+  function renderError() {
+    if (store.error) {
+      const el = generateError(store.error);
+      $('.error-containter').html(el);      
+    }
+    else {
+      $('.error-container').empty();
+    }
+  }
+
   
 
   
@@ -135,15 +151,17 @@ const shoppingList = (function(){
       const newItemName = $('.js-shopping-list-entry').val();
 
       $('.js-shopping-list-entry').val('');
-      console.log('form subbmitted')
+      
       if(newItemName){
-        api.createItem(newItemName)
-          .then(res => res.json())
-          .then((newItem) => {
-            console.log('about to add item');
+        api.createItem(newItemName)          
+          .then((newItem) => {            
             store.addItem(newItem);
             render();
-          });
+          })
+          .catch(error => {
+            store.setError(error.message);
+            renderError();
+          })
       }
     });
 
@@ -178,17 +196,15 @@ const shoppingList = (function(){
             store.findAndUpdate(id, {checked: !item.checked})
             render();
           }         
-        });    
-
-      
-
-      
+        })
+        .catch(error => {
+          store.setError(error.message);
+          renderError();
+        });
 
     });
 
-  }
-
-  
+  }  
 
   function handleDeleteItemClicked() {
 
@@ -202,12 +218,18 @@ const shoppingList = (function(){
 
       // delete the item
 
-      store.findAndDelete(id);
-
-      // render the updated shopping list
-
-      render();
-
+      
+      api.deleteItem(id)
+      .then(()=>{
+        store.findAndDelete(id);
+        render();
+      })
+      .catch(error => {
+        store.setError(error.message);
+        renderError();
+      });   
+      
+    
     });
 
   }
@@ -238,27 +260,23 @@ const shoppingList = (function(){
             store.findAndUpdate(id, newName)
             render();
           }         
-        });            
-
-      
-
+        })
+        .catch(error => {
+          store.setError(error.message);
+          renderError();
+        }); 
     });
-
   }
 
   
 
   function handleToggleFilterClick() {
-
     $('.js-filter-checked').click(() => {
 
       store.toggleCheckedFilter();
-      
 
       render();
-
     });
-
   }
 
   
